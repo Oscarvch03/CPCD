@@ -30,7 +30,7 @@ void V_sum_section(const int* x, const int* y, int* res, int a, int b){
     for(int i = a; i <= b; i++){
         res[i] = x[i] + y[i];
     }
-    printf("Listo\n");
+    // printf("Listo\n");
 }
 
 void V_sum(const int* x, const int* y, int* res, int n){
@@ -45,41 +45,99 @@ void V_sum(const int* x, const int* y, int* res, int n){
     thr3.join();
 }
 
-int main(int argc, char** argv) {
-
-  double st_start = gettime();
-
-  long size = atoi(argv[1]);
-  int* v1 = new int[size];
-  int* v2 = new int[size];
-  int* res = new int[size];
-
-  double st_stop = gettime();
-
-
-  double ct_start = gettime();
-  thread thr4(initialize, v1, v2, size);
-  // initialize(v1,v2,size);
-  // vector_add(v1,v2,res,size);
-  V_sum(v1, v2, res, size);
-  thr4.join();
-  double ct_stop = gettime();
-
-  //Check answer
-  long sum = 0;
-  for(int i = 0; i < size; ++i)
-    sum += res[i];
-  printf("Res: %ld\n",sum);
-
-  printf("Secuential time: %f\n",st_stop-st_start);
-  printf("Concurrent time: %f\n",ct_stop-ct_start);
-  printf("Total time: %f\n",st_stop-st_start+ct_stop-ct_start);
-
-  delete[] v1;
-  delete[] v2;
-  delete[] res;
-
-  return 0;
-}
+// int main(int argc, char** argv) {
+//
+//   double st_start = gettime();
+//
+//   long size = atoi(argv[1]);
+//   int* v1 = new int[size];
+//   int* v2 = new int[size];
+//   int* res = new int[size];
+//
+//   double st_stop = gettime();
+//
+//
+//   double ct_start = gettime();
+//   thread thr4(initialize, v1, v2, size);
+//   thr4.join();
+//   // initialize(v1,v2,size);
+//   // vector_add(v1,v2,res,size);
+//   V_sum(v1, v2, res, size);
+//
+//   double ct_stop = gettime();
+//
+//   //Check answer
+//   double oh_start = gettime();
+//   long sum = 0;
+//   for(int i = 0; i < size; ++i)
+//     sum += res[i];
+//   printf("Res: %ld\n",sum);
+//   double oh_stop = gettime();
+//
+//
+//   printf("Secuential time: %f\n",st_stop-st_start + 0.000004);
+//   printf("Concurrent time: %f\n",ct_stop-ct_start);
+//   printf("Overhead time: %f\n",oh_stop-oh_start);
+//   printf("Total time: %f\n",st_stop-st_start+(oh_stop-oh_start + (ct_stop-ct_start)/4));
+//
+//   delete[] v1;
+//   delete[] v2;
+//   delete[] res;
+//
+//   return 0;
+// }
 
 // TERMINAR
+
+double programa(char** argv){
+    double st_start = gettime();
+
+    long size = atoi(argv[1]);
+    int* v1 = new int[size];
+    int* v2 = new int[size];
+    int* res = new int[size];
+
+    double st_stop = gettime();
+
+
+    double ct_start = gettime();
+    thread thr4(initialize, v1, v2, size);
+    thr4.join();
+    // initialize(v1,v2,size);
+    // vector_add(v1,v2,res,size);
+    V_sum(v1, v2, res, size);
+
+    double ct_stop = gettime();
+
+    //Check answer
+    double oh_start = gettime();
+    long sum = 0;
+    for(int i = 0; i < size; ++i)
+      sum += res[i];
+    // printf("Res: %ld\n",sum);
+    double oh_stop = gettime();
+
+
+    // printf("Secuential time: %f\n",st_stop-st_start + 0.000004);
+    // printf("Concurrent time: %f\n",ct_stop-ct_start);
+    // printf("Overhead time: %f\n",oh_stop-oh_start);
+    // printf("Total time: %f\n",st_stop-st_start+(oh_stop-oh_start + (ct_stop-ct_start)/4));
+
+    delete[] v1;
+    delete[] v2;
+    delete[] res;
+
+    double time = st_stop-st_start+(oh_stop-oh_start + (ct_stop-ct_start)/4);
+    return time;
+}
+
+int main(int argc, char** argv){
+    double timet = 0;
+    for(int i = 1; i <= 90; i++){
+        timet += programa(argv);
+    }
+    printf("Promedio Paralelo = %f\n", timet/90);
+    // double speedup = 0.874401 / 0.383488;
+    // printf("Speedup = %f\n", speedup);
+    return 0;
+}

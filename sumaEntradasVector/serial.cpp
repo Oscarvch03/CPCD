@@ -23,36 +23,79 @@ void vector_add(const int* v1, const int* v2,
     res[i] = v1[i] + v2[i];
 }
 
-int main(int argc, char** argv) {
+// int main(int argc, char** argv) {
+//
+//   double st_start = gettime();
+//
+//   long size = atoi(argv[1]);
+//   int* v1 = new int[size];
+//   int* v2 = new int[size];
+//   int* res = new int[size];
+//
+//   double st_stop = gettime();
+//
+//
+//   double ct_start = gettime();
+//   initialize(v1,v2,size);
+//   vector_add(v1,v2,res,size);
+//   double ct_stop = gettime();
+//
+//   //Check answer
+//   long sum = 0;
+//   for(int i = 0; i < size; ++i)
+//     sum += res[i];
+//   printf("Res: %ld\n",sum);
+//
+//   printf("Secuential time: %f\n",st_stop-st_start);
+//   printf("Concurrent time: %f\n",ct_stop-ct_start);
+//   printf("Total time: %f\n",st_stop-st_start+ct_stop-ct_start);
+//
+//   delete[] v1;
+//   delete[] v2;
+//   delete[] res;
+//
+//   return 0;
+// }
 
-  double st_start = gettime();
-  
-  long size = atoi(argv[1]);
-  int* v1 = new int[size];
-  int* v2 = new int[size];
-  int* res = new int[size];
-  
-  double st_stop = gettime();
+double programa(char** argv){
+    double st_start = gettime();
 
-  
-  double ct_start = gettime();
-  initialize(v1,v2,size);
-  vector_add(v1,v2,res,size);
-  double ct_stop = gettime();
-  
-  //Check answer
-  long sum = 0;
-  for(int i = 0; i < size; ++i)
-    sum += res[i];
-  printf("Res: %ld\n",sum);
-  
-  printf("Secuential time: %f\n",st_stop-st_start);
-  printf("Concurrent time: %f\n",ct_stop-ct_start);
-  printf("Total time: %f\n",st_stop-st_start+ct_stop-ct_start);
+    long size = atoi(argv[1]);
+    int* v1 = new int[size];
+    int* v2 = new int[size];
+    int* res = new int[size];
 
-  delete[] v1;
-  delete[] v2;
-  delete[] res;
-  
-  return 0;
+    double st_stop = gettime();
+
+
+    double ct_start = gettime();
+    initialize(v1,v2,size);
+    vector_add(v1,v2,res,size);
+    double ct_stop = gettime();
+
+    //Check answer
+    long sum = 0;
+    for(int i = 0; i < size; ++i)
+      sum += res[i];
+    // printf("Res: %ld\n",sum);
+    //
+    // printf("Secuential time: %f\n",st_stop-st_start);
+    // printf("Concurrent time: %f\n",ct_stop-ct_start);
+    // printf("Total time: %f\n",st_stop-st_start+ct_stop-ct_start);
+
+    delete[] v1;
+    delete[] v2;
+    delete[] res;
+
+    double time = st_stop-st_start+ct_stop-ct_start;
+    return time;
+}
+
+int main(int argc, char** argv){
+    double timet = 0;
+    for(int i = 1; i <= 90; i++){
+        timet += programa(argv);
+    }
+    printf("Promedio Serial = %f\n", timet/90);
+    return 0;
 }
