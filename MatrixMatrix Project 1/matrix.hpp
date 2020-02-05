@@ -31,6 +31,6 @@ public:
     MatrixOne& operator=(MatrixOne &M);
     void display();
 
-}
+};
 
 #endif
