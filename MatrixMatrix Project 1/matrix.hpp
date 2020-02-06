@@ -1,6 +1,9 @@
 #ifndef __MATRIX_ONE_HPP
 #define __MATRIX_ONE_HPP
 
+class MatrixOne;
+MatrixOne operator * (MatrixOne &M1, MatrixOne &M2);
+
 class MatrixOne{
 
 private:
@@ -28,7 +31,8 @@ public:
         array[y * dimx + x] = val;
     }
 
-    MatrixOne& operator=(MatrixOne &M);
+    MatrixOne& operator = (MatrixOne &M);
+    // MatrixOne& operator * (MatrixOne &M);
     void display();
 
 };
