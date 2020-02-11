@@ -1,8 +1,12 @@
 #ifndef __MATRIX_ONE_HPP
 #define __MATRIX_ONE_HPP
 
-class MatrixOne;
-MatrixOne operator * (MatrixOne &M1, MatrixOne &M2);
+// class MatrixOne;
+
+// MatrixOne operator * (MatrixOne & M1, MatrixOne & M2); // Serial
+
+// MatrixOne operator * (MatrixOne & M1, MatrixOne & M2); // Paralelo
+// void MxM_helper(MatrixOne & M1, MatrixOne & M2, MatrixOne & RES, int iniM1y, int finM1y); // Helper Paralelo
 
 class MatrixOne{
 
@@ -24,15 +28,15 @@ public:
     }
 
     int get(int x, int y){
-        return array[y * dimx + x];
+        return array[x * dimx + y];
     }
 
     void set(int x, int y, int val){
-        array[y * dimx + x] = val;
+        array[x * dimx + y] = val;
     }
 
     MatrixOne& operator = (MatrixOne &M);
-    // MatrixOne& operator * (MatrixOne &M);
+
     void display();
 
 };

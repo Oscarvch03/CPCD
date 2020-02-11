@@ -1,4 +1,3 @@
-
 #include "matrix.hpp"
 
 #include <iostream>
@@ -7,8 +6,8 @@
 
 using namespace std;
 
-const int DIMX = 50;
-const int DIMY = 50;
+const int DIMX = 1000;
+const int DIMY = 1000;
 
 
 double gettime(){
@@ -31,9 +30,9 @@ int main(int argc, char** argv){
     MatrixOne R = M1 * M2;
     double tstop = gettime();
 
-    // R.display();
+    R.display();
     printf("%d\n", R.get(0, 0));
-    printf("Time: %f\n", tstop - tstart);
+    printf("Time Paralel: %f\n", tstop - tstart);
 
     return 0;
 
@@ -67,10 +66,13 @@ int main(int argc, char** argv){
     // cout << endl;
     // cout << "M2:" << endl;
     // M2.display();
+    // //
+    // MatrixOne Res(m, n);
+    // MxM_helper(M1, M2, Res, 0, M1.get_dimy();
     //
-    // MatrixOne Res = M1 * M2;
-    // // cout << endl;
+    // cout << endl;
     // cout << "Res:" << endl;
     // Res.display();
 
+    return 0;
 }

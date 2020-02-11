@@ -1,7 +1,8 @@
-
 #include "matrix.hpp"
 
 #include <iostream>
+#include <thread>
+
 using namespace std;
 
 // Constructor
@@ -44,27 +45,6 @@ MatrixOne& MatrixOne::operator = (MatrixOne &M){
 }
 
 
-// MatrixOne& MatrixOne::operator * (MatrixOne &M){
-//     int auxx = this -> get_dimx();
-//     int auxy = M.get_dimy();
-//     MatrixOne aux(auxx, auxy);
-//     for(int i = 0; i < this -> get_dimy(); i++){
-//         for(int j = 0; j < M.get_dimx(); j++){
-//             int val = 0;
-//             for(int k = 0; k < M.get_dimy(); k++){
-//                 val += this -> get(i, k) * M.get(k, j);
-//                 if(k + 1 == M.get_dimy()){
-//                     aux.set(i, k, val);
-//                 }
-//             }
-//
-//         }
-//     }
-//     *this = aux;
-//     return *this;
-// }
-
-
 void MatrixOne::display(){
     cout << "[" << endl;
     for(int i = 0; i < dimx * dimy; i++){
@@ -74,27 +54,4 @@ void MatrixOne::display(){
         }
     }
     cout << "]" << endl;
-}
-
-
-MatrixOne operator * (MatrixOne &M1, MatrixOne &M2){
-    int auxx = M1.get_dimx();
-    int auxy = M2.get_dimy();
-    MatrixOne aux(auxy, auxx);
-    // int cont = 0;
-    for(int i = 0; i <  M1.get_dimx(); i++){
-        for(int j = 0; j < M2.get_dimy(); j++){
-            int val = 0;
-            for(int k = 0; k < M2.get_dimx(); k++){
-                val += M1.get(i, k) * M2.get(k, j);
-                if(k + 1 == M2.get_dimx()){
-                    aux.set(i, j, val);
-                }
-            }
-
-        }
-    }
-    cout << "Prueba" << endl;
-    aux.display();
-    return aux;
 }

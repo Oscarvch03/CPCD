@@ -1,0 +1,15 @@
+PARA mainSerial.cpp:
+
+g++ -std=c++14 -Wall -Werror -Wextra -c matrix.cpp
+g++ -std=c++14 -Wall -Werror -Wextra -c serial.cpp
+g++ -std=c++14 mainSerial.cpp matrix.o serial.o
+./a.out _
+
+
+PARA mainParallel.cpp:
+
+g++ -std=c++14 -Wall -Werror -Wextra -pthread -c matrix.cpp
+g++ -std=c++14 -Wall -Werror -Wextra -pthread -c parallel.cpp
+g++ -std=c++14 -pthread mainParallel.cpp matrix.o parallel.o
+./a.out _
+
