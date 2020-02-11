@@ -87,7 +87,7 @@ MatrixOne operator * (MatrixOne &M1, MatrixOne &M2){
             int val = 0;
             for(int k = 0; k < M2.get_dimx(); k++){
                 val += M1.get(i, k) * M2.get(k, j);
-                if(k + 1 == M2.get_dimy()){
+                if(k + 1 == M2.get_dimx()){
                     aux.set(i, j, val);
                 }
             }
