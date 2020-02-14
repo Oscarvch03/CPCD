@@ -25,6 +25,7 @@ int main(int argc, char** argv){
 
     MatrixOne M1(DIMY, size);
     MatrixOne M2(size, DIMX);
+
     // M1.display();
     // M2.display();
 
@@ -37,7 +38,7 @@ int main(int argc, char** argv){
     myfile << "Tiempos Parallel:\n";
     myfile << "t\t" << "t²\n";
 
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 100; i++){ // Esto también se podría paralelizar :0
 
         double tstart = gettime();
         MatrixOne R = M1 * M2;
@@ -49,7 +50,6 @@ int main(int argc, char** argv){
         myfile << time << "\t" << time2 << "\n";
 
     }
-
 
     // R.display();
     // printf("%d\n", R.get(0, 0));
