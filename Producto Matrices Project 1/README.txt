@@ -24,3 +24,6 @@ El repositorio cuenta con un "Makefile" que facilita la compilación.
     generados en los "make" 1 & 2. Luego calculo el SpeedUp promedio
     ("SpU") y su Desviacion Estandar ("DE").
     Para ejecutar "./SUandDE".
+
+
+FALTO AGREGAR PRUEBAS INDIVIDUALES PARA OPERADOR SERIAL Y PARALELO. REVISAR
