@@ -1,6 +1,6 @@
 OSCAR VELASCO CHIQUILLO
 13 DE FEBRERO DE 2020
-CPCD: PROJECT 1 / Prodcuto entre matrices Serial & Paralelo
+CPCD: PROJECT 1 / Producto entre matrices Serial & Paralelo
 
 Link Github: https://github.com/Oscarvch03/CPCD-PROJECT-1-MxM.git
 
