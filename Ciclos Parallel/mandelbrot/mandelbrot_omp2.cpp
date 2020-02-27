@@ -5,6 +5,8 @@
  *case |z|<2.
  */
 
+ // mandelbrot parallel for schedule reduction
+
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -23,6 +25,8 @@ const double MAX_IM = 1.;
 
 bool is_in(const complex<double>& c) {
   complex<double> z(0,0);
+  // #pragma omp parallel
+  // #pragma omp for schedule(runtime)
   for(int i = 0; i < MAX_ITER; ++i){
     z = z*z + c;
     //printf("(%f,%f)\n",z.real(),z.imag());
@@ -38,17 +42,24 @@ long mandelbrot(int* A, int nrows, int ncols, double xlim[2],
   double stepy = (ylim[1] - ylim[0]) / nrows;
   long noutside = 0;
 
+  #pragma omp parallel
+  {
+  long aux = 0;
+  #pragma omp for schedule (runtime), collapse(2)
   for(int i = 0; i < nrows; ++i){
     for(int j = 0; j < ncols; ++j){
       complex<double> c(stepx*j+xlim[0], stepy*i+ylim[0]);
       bool test = is_in(c);
       if(test){
-	A[i*ncols+j] = 1;
-      }else{
-	A[i*ncols+j] = 0;
-	noutside++;
+        	A[i*ncols+j] = 1;
+              }else{
+        	A[i*ncols+j] = 0;
+        	aux++;
       }
     }
+  }
+  #pragma omp atomic
+      noutside += aux;
   }
   return noutside;
 }
@@ -60,6 +71,7 @@ void print_out(const int* A, int nrows, int ncols) {
       Out << A[i*ncols+j] << " ";
     Out << endl;
   }
+
   Out.close();
 }
 

@@ -9,11 +9,21 @@
 
 int frobenius(int* A, int m, int n) {
   int norm = 0;
-  for(int i = 0; i < m; ++i){
-    for(int j = 0; j < n; ++j)
-      norm += A[i*n+j]*A[i*n+j];
+  #pragma omp parallel
+  {
+      int aux = 0;
+      #pragma omp for schedule(runtime)
+          for(int i = 0; i < m; ++i){
+              for(int j = 0; j < n; ++j){
+                  aux += A[i*n+j]*A[i*n+j];
+              }
+          }
+
+      #pragma omp atomic
+          norm += aux;
   }
-  return sqrt(norm);
+  // return sqrt(norm);
+  return norm;
 }
 
 

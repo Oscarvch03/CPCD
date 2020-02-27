@@ -1,5 +1,5 @@
 //Norma de Frobenius de una matriz
-//Código Parallel collapse AND schedule
+//Código Parallel con reduction
 
 #include <cstdio>
 #include <cstdlib>
@@ -12,14 +12,11 @@ int frobenius(int* A, int m, int n) {
   int norm = 0;
   #pragma omp parallel
   {
-  int aux = 0;
-  #pragma omp for schedule (runtime) collapse(2)
+  #pragma omp for schedule (runtime) collapse(2) reduction(+: norm)
   for(int i = 0; i < m; ++i){
     for(int j = 0; j < n; ++j)
-      aux += A[i*n+j]*A[i*n+j];
+      norm += A[i*n+j]*A[i*n+j];
   }
-  #pragma omp atomic
-      norm += aux;
   }
   // return sqrt(norm);
   return norm;

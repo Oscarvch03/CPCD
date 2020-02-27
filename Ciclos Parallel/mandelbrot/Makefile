@@ -1,4 +1,4 @@
-BIN		:= mandelbrot mandelbrot_omp
+BIN		:= mandelbrot mandelbrot_omp mandelbrot_omp2
 
 
 
@@ -9,16 +9,18 @@ LDFLAGS		:= -fopenmp
 CXX		:= g++
 
 
-HEADS		:=                                                              
+HEADS		:=
 SRC		:=
 
 
 mandelbrot: mandelbrot.cpp $(HEADS)
-	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $(SRC) mandelbrot.cpp 
+	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $(SRC) mandelbrot.cpp
 
 mandelbrot_omp: mandelbrot_omp.cpp $(HEADS)
-	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $(SRC) mandelbrot_omp.cpp 
+	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $(SRC) mandelbrot_omp.cpp
 
+mandelbrot_omp2: mandelbrot_omp2.cpp $(HEADS)
+		$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $(SRC) mandelbrot_omp2.cpp
 
 clean:
 	rm $(BIN) *.o core*
