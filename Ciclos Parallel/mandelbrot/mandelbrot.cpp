@@ -4,7 +4,6 @@
  *q_c(z) does not exceed certain value (in this
  *case |z|<2.
  */
-
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>

@@ -7,6 +7,7 @@
 
  // mandelbrot parallel for schedule reduction
 
+
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
