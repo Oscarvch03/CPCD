@@ -2,9 +2,9 @@
 
 
 int main(int argc, char** argv) {
-  int size = atoi(argv[1]);
+  long size = atoi(argv[1]);
   
-  int* a = new int[size];
+  long* a = new long[size];
 
   unsigned seed = 123;
   generate_norepeat_vector(size, a, seed);

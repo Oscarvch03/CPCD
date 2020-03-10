@@ -1,50 +1,50 @@
 #include "generate_random.hpp"
 
 
-void print_vector(int size, const int* a) {
-  for(int i = 0; i < size; ++i)
-    printf("%d ",a[i]);
+void print_vector(long size, const long* a) {
+  for(long i = 0; i < size; ++i)
+    printf("%ld ",a[i]);
   printf("\n");
 }
 
-void write_vector(int size, const int* a) {
+void write_vector(long size, const long* a) {
   ofstream Out("vector.dat");
-  for(int i = 0; i < size; ++i)
+  for(long i = 0; i < size; ++i)
     Out << a[i] << " ";
   Out << "\n";
   Out.close();
 }
 
-void read_vector(int size, int* a) {
+void read_vector(long size, long* a) {
   ifstream In("vector.dat");
-  for(int i = 0; i < size; ++i)
+  for(long i = 0; i < size; ++i)
     In >> a[i];
   In.close();
 }
 
-void generate_vector(int size, int* a, unsigned seed) {
+void generate_vector(long size, long* a, unsigned seed) {
   minstd_rand0 rng(seed);
   
-  const int max_num = size;
+  const long max_num = size;
   //Generation of a sequence of (pseudo)random numbers
   rng();
-  for(int i = 0; i < size; ++i){
-    int num = int(max_num * ( double(rng()) / rng.max() ));
+  for(long i = 0; i < size; ++i){
+    long num = long(max_num * ( double(rng()) / rng.max() ));
     a[i] = num;
   }
 }
 
-void generate_norepeat_vector(int size, int* a, unsigned seed) {
+void generate_norepeat_vector(long size, long* a, unsigned seed) {
   minstd_rand0 rng(seed);
   
-  const int max_num = 3*size;
+  const long max_num = 3*size;
   //use set to profit from the count method
-  set<int> numbers;
+  set<long> numbers;
   //Generation of a sequence of (pseudo)random numbers
   rng();
-  int count = 0;
+  long count = 0;
   while(count < size){
-    int num = int(max_num * ( double(rng()) / rng.max() ));
+    long num = long(max_num * ( double(rng()) / rng.max() ));
     if(numbers.count(num) == 0){ //if number not in set
       numbers.insert(num);
       a[count] = num;

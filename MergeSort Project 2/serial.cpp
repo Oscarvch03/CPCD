@@ -2,17 +2,44 @@
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
+#include <omp.h>
+#include <fstream>
+#include <string>
 using namespace std;
 
-void display_vector(vector<int> v){
+vector<long> read_dat(){
+  string line;
+  vector<long> aux;
+  ifstream myfile("vector.dat");
+  if(myfile.is_open()){
+      while(getline(myfile, line)){
+              string str;
+              for(long i = 0; i < long(line.length()); i++){
+                  if(line[i] == ' ' || i == line.length()){
+                      long num = stol(str.c_str());
+                      aux.push_back(num);
+                      str = "";
+                  }
+                  else{
+                      str += line[i];
+                  }
+              }
+      }
+      myfile.close();
+  }
+  else cout << "Unable to open file. " << endl;
+  return aux;
+}
+
+void display_vector(vector<long> v){
     cout << "[ ";
-    for(unsigned i = 0; i < v.size(); i++){
+    for(long i = 0; i < long(v.size()); i++){
         cout << v[i] << " ";
     }
     cout << "]" << endl;
 }
 
-void MERGE(vector<int> &v, int ini, int fin, vector<int> &tmp){
+void MERGE(vector<long> &v, long ini, long fin, vector<long> &tmp){
     // cout << "bye" << endl;
     int mid = (fin + ini) / 2;
     int p1 = ini;
@@ -50,7 +77,7 @@ void MERGE(vector<int> &v, int ini, int fin, vector<int> &tmp){
 }
 
 
-void MERGESORT(vector<int> &v, int ini, int fin, vector<int> &tmp){
+void MERGESORT(vector<long> &v, long ini, long fin, vector<long> &tmp){
     int mid = (fin + ini) / 2;
     // cout << "mid = " << mid << endl;
     if(ini < mid){
@@ -70,12 +97,32 @@ int main(){
     // vector<int> v1 = {3, 5, 2, 7, 4};
     vector<int> v1 = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
     vector<int> tmp1(v1.size(), 0);
-    cout << "Vector Original: " << endl;
-    display_vector(v1);
+    // cout << "Vector Original: " << endl;
+    // display_vector(v1);
     // display_vector(tmp1);
-    MERGESORT(v1, 0, v1.size(), tmp1);
-    cout << "Vector Ordenado: " << endl;
-    display_vector(v1);
+
+    vector<long> v2 = read_dat();
+    vector<long> tmp2(v2.size(), 0);
+    // cout << "v2:" << endl;
+    // display_vector(v2);
+    // cout << endl;
+    // cout << v2.size() << endl;
+
+    double t_start = omp_get_wtime();
+    MERGESORT(v2, 0, v2.size(), tmp2);
+    double t_stop = omp_get_wtime();
+
+    cout << tmp2[0] << " ";
+    cout << tmp2[tmp2.size()/4] << " ";
+    cout << tmp2[tmp2.size()/2] << " ";
+    cout << tmp2[3*tmp2.size()/4] << " ";
+    cout << tmp2[tmp2.size()-1] << endl;
+
+    // cout << "Vector Ordenado: " << endl;
+    // display_vector(v2);
+
+    // cout << endl;
+    printf("Time Serial: %f\n",t_stop-t_start);
 
     return 0;
 }
