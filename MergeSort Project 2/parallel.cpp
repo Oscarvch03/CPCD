@@ -41,6 +41,18 @@ void display_vector(vector<long> v){
 }
 
 
+// BUBBLESORT
+void BubbleSort(vector<long> &vec, long ini, long fin){
+    for(long i = ini; i < fin; i++){
+        for(long j = ini; j < fin-1; j++){
+            if(vec[j] > vec[j+1]){
+                swap(vec[j], vec[j+1]);
+            }
+        }
+    }
+}
+
+
 void MERGE(vector<long> &v, long ini, long fin, vector<long> &tmp){
     // cout << "bye" << endl;
     int mid = (fin + ini) / 2;
@@ -80,9 +92,10 @@ void MERGE(vector<long> &v, long ini, long fin, vector<long> &tmp){
 
 
 void MERGESORT(vector<long> &v, long ini, long fin, vector<long> &tmp){
-    int mid = (fin + ini) / 2;
-    if(ini < mid){
-        if(fin-ini > 100){
+
+
+          if(fin-ini > 100){
+              long mid = (fin + ini) / 2;
               #pragma omp task shared(v)
                   MERGESORT(v, ini, mid, tmp);
               #pragma omp task shared(v)
@@ -91,11 +104,29 @@ void MERGESORT(vector<long> &v, long ini, long fin, vector<long> &tmp){
                   MERGE(v, ini, fin, tmp);
           }
           else{
-              MERGESORT(v, ini, mid, tmp);
-              MERGESORT(v, mid, fin, tmp);
-              MERGE(v, ini, fin, tmp);
+              // #pragma omp task
+              // {
+                  BubbleSort(v, ini, fin);
+                  // tmp = v;
+              // }
           }
-    }
+
+        // if(fin-ini <= 100){
+        //
+        //         BubbleSort(v, ini, fin);
+        //         // tmp = v;
+        //
+        // }
+        // else{
+        //   long mid = (fin + ini) / 2;
+        //   #pragma omp task
+        //       MERGESORT(v, ini, mid, tmp);
+        //   #pragma omp task
+        //       MERGESORT(v, mid, fin, tmp);
+        //   #pragma omp taskwait
+        //       MERGE(v, ini, fin, tmp);
+        // }
+
 }
 
 
@@ -121,11 +152,14 @@ int main(){
     }
     double t_stop = omp_get_wtime();
 
+    cout << endl;
+    cout << "Verificacion: " << endl;
     cout << tmp2[0] << " ";
     cout << tmp2[tmp2.size()/4] << " ";
     cout << tmp2[tmp2.size()/2] << " ";
     cout << tmp2[3*tmp2.size()/4] << " ";
     cout << tmp2[tmp2.size()-1] << endl;
+    cout << endl;
 
     // cout << "Vector Ordenado: " << endl;
     // display_vector(v2);

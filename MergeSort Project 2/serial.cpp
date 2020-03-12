@@ -39,6 +39,19 @@ void display_vector(vector<long> v){
     cout << "]" << endl;
 }
 
+
+// BUBBLESORT
+void BubbleSort(vector<long> &vec, long ini, long fin){
+    for(long i = ini; i < fin; i++){
+        for(long j = ini; j < fin-1; j++){
+            if(vec[j] > vec[j+1]){
+                swap(vec[j], vec[j+1]);
+            }
+        }
+    }
+}
+
+
 void MERGE(vector<long> &v, long ini, long fin, vector<long> &tmp){
     // cout << "bye" << endl;
     int mid = (fin + ini) / 2;
@@ -81,11 +94,17 @@ void MERGESORT(vector<long> &v, long ini, long fin, vector<long> &tmp){
     int mid = (fin + ini) / 2;
     // cout << "mid = " << mid << endl;
     if(ini < mid){
-        // cout << "hola" << endl;
-        MERGESORT(v, ini, mid, tmp);
-        // cout << "hola2" << endl;
-        MERGESORT(v, mid, fin, tmp);
-        MERGE(v, ini, fin, tmp);
+        if(fin - ini > 100){
+            // cout << "hola" << endl;
+            MERGESORT(v, ini, mid, tmp);
+            // cout << "hola2" << endl;
+            MERGESORT(v, mid, fin, tmp);
+            MERGE(v, ini, fin, tmp);
+        }
+        else{
+            BubbleSort(v, ini, fin);
+            // tmp = v;
+        }
     }
 }
 
@@ -112,11 +131,14 @@ int main(){
     MERGESORT(v2, 0, v2.size(), tmp2);
     double t_stop = omp_get_wtime();
 
+    cout << endl;
+    cout << "Verificacion: " << endl;
     cout << tmp2[0] << " ";
     cout << tmp2[tmp2.size()/4] << " ";
     cout << tmp2[tmp2.size()/2] << " ";
     cout << tmp2[3*tmp2.size()/4] << " ";
     cout << tmp2[tmp2.size()-1] << endl;
+    cout << endl;
 
     // cout << "Vector Ordenado: " << endl;
     // display_vector(v2);

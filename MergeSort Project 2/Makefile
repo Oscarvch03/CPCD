@@ -1,4 +1,4 @@
-BIN		:= serial parallel generate
+BIN		:= serial parallel generate BubbleSort
 
 CFLAGS		:= -std=c++14 -O3 -m64
 LDFLAGS		:= -fopenmp
@@ -18,6 +18,9 @@ parallel: parallel.cpp
 
 generate: generate.cpp $(HEADS)
 	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $(SRC) generate.cpp
+
+BubbleSort: BubbleSort.cpp
+	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ BubbleSort.cpp
 
 clean:
 	rm $(BIN) *.o core*
