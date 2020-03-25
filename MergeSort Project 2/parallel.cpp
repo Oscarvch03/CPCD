@@ -5,7 +5,19 @@
 #include <omp.h>
 #include <fstream>
 #include <string>
+#include <functional>
 using namespace std;
+
+
+bool verifOrd(vector<long> &v){
+    for(long i = 0; i < long(v.size()) - 1; i++){
+        if(v[i] > v[i + 1]){
+            return 0;
+        }
+    }
+    return 1;
+}
+
 
 vector<long> read_dat(){
   string line;
@@ -54,13 +66,12 @@ void BubbleSort(vector<long> &vec, long ini, long fin){
 
 
 void MERGE(vector<long> &v, long ini, long fin, vector<long> &tmp){
-    // cout << "bye" << endl;
     int mid = (fin + ini) / 2;
     int p1 = ini;
     int p2 = mid;
     int pt = ini;
-    while(p1 < mid && p2 < fin){
 
+    while(p1 < mid && p2 < fin){
         if(v[p1] < v[p2]){
             tmp[pt] = v[p1];
             pt++;
@@ -91,81 +102,78 @@ void MERGE(vector<long> &v, long ini, long fin, vector<long> &tmp){
 }
 
 
-void MERGESORT(vector<long> &v, long ini, long fin, vector<long> &tmp){
-
-
-          if(fin-ini > 100){
-              long mid = (fin + ini) / 2;
-              #pragma omp task shared(v)
-                  MERGESORT(v, ini, mid, tmp);
-              #pragma omp task shared(v)
-                  MERGESORT(v, mid, fin, tmp);
-              #pragma omp taskwait
-                  MERGE(v, ini, fin, tmp);
-          }
-          else{
-              // #pragma omp task
-              // {
-                  BubbleSort(v, ini, fin);
-                  // tmp = v;
-              // }
-          }
-
-        // if(fin-ini <= 100){
-        //
-        //         BubbleSort(v, ini, fin);
-        //         // tmp = v;
-        //
-        // }
-        // else{
-        //   long mid = (fin + ini) / 2;
-        //   #pragma omp task
-        //       MERGESORT(v, ini, mid, tmp);
-        //   #pragma omp task
-        //       MERGESORT(v, mid, fin, tmp);
-        //   #pragma omp taskwait
-        //       MERGE(v, ini, fin, tmp);
-        // }
-
+void MERGESORT_helper(vector<long> &v, long ini, long fin, vector<long> &tmp){
+    if(fin-ini > 100){
+        long mid = (fin + ini) / 2;
+        #pragma omp task shared(v, tmp)
+        {
+            MERGESORT_helper(ref(v), ini, mid, ref(tmp));
+        }
+        #pragma omp task shared(v, tmp)
+        {
+            MERGESORT_helper(ref(v), mid, fin, ref(tmp));
+        }
+        #pragma omp taskwait
+        {
+            MERGE(ref(v), ini, fin, ref(tmp));
+        }
+    }
+    else{
+        BubbleSort(ref(v), ini, fin);
+    }
 }
+
+
+void MERGESORT(vector<long> &v, long ini, long fin, vector<long> &tmp){
+    #pragma omp parallel
+    {
+        #pragma omp single
+        {
+            MERGESORT_helper(ref(v), 0, v.size(), ref(tmp));
+        }
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 
 
 int main(){
 
-    // vector<int> v1 = {3, 5, 2, 7, 4};
-    vector<int> v1 = {9, 8, 7, 2, 6, 5, 4, 3, 2, 1, 0};
-    vector<int> tmp1(v1.size(), 0);
-    // cout << "Vector Original: " << endl;
-    // display_vector(v1);
-    // display_vector(tmp1);
+    cout << endl;
+    vector<long> v = read_dat();
+    cout << "Tamanho del Vector: " << v.size() << endl;
+    vector<long> tmp(v.size(), 0);
 
-    vector<long> v2 = read_dat();
-    vector<long> tmp2(v2.size(), 0);
-    // display_vector(v2);
-    // cout << endl;
+    // display_vector(v);
 
-    double t_start = omp_get_wtime();
-    #pragma omp parallel
-    #pragma omp single
-    {
-        MERGESORT(v2, 0, v2.size(), tmp2);
+    cout << "Ordenando Vector... " << endl;
+    cout << endl;
+
+    double t_start;
+    double t_stop;
+    if(v.size() <= 100){
+        BubbleSort(v, 0, v.size());
+        tmp = v;
     }
-    double t_stop = omp_get_wtime();
+    else{
+        t_start = omp_get_wtime();
+        MERGESORT(v, 0, v.size(), tmp);
+        t_stop = omp_get_wtime();
+    }
 
+    // display_vector(tmp);
+
+    bool Ord = verifOrd(tmp);
+    if(Ord == 1){
+        cout << "El Vector ha sido Ordenado. " << endl;
+    }
+    else{
+        cout << "El vector NO ha sido Ordenado. " << endl;
+    }
+
+    printf("Time Parallel: %.8f\n",t_stop-t_start);
     cout << endl;
-    cout << "Verificacion: " << endl;
-    cout << tmp2[0] << " ";
-    cout << tmp2[tmp2.size()/4] << " ";
-    cout << tmp2[tmp2.size()/2] << " ";
-    cout << tmp2[3*tmp2.size()/4] << " ";
-    cout << tmp2[tmp2.size()-1] << endl;
-    cout << endl;
-
-    // cout << "Vector Ordenado: " << endl;
-    // display_vector(v2);
-
-    // cout << endl;
-    printf("Time Parallel: %f\n",t_stop-t_start);
 
     return 0;
 }

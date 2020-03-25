@@ -9,7 +9,6 @@ HEADS		:=  generate_random.hpp
 SRC		:=  generate_random.cpp
 
 
-
 serial: serial.cpp
 	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ serial.cpp
 
@@ -22,5 +21,11 @@ generate: generate.cpp $(HEADS)
 BubbleSort: BubbleSort.cpp
 	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ BubbleSort.cpp
 
-clean:
+cleanL:
 	rm $(BIN) *.o core*
+
+cleanW:
+	del $(BIN) *.exe*
+
+cleanO: 
+	rm *.out*
